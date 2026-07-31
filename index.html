@@ -18,7 +18,7 @@
     .app-card {
       background: #ffffff;
       width: 100%;
-      max-width: 420px; /* Ukuran kotak kecil/compact */
+      max-width: 420px;
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
@@ -68,6 +68,16 @@
       text-align: center;
       font-size: 12px;
     }
+    .o2-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 6px;
+      background: #f8f9fa;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #e9ecef;
+    }
     .btn-group {
       display: flex;
       gap: 8px;
@@ -88,7 +98,6 @@
     .btn-reset { background-color: #6c757d; color: white; }
     .btn-reset:hover { background-color: #5c636a; }
     
-    /* Area Preview Teks */
     .preview-box {
       margin-top: 15px;
       padding: 10px;
@@ -146,7 +155,7 @@
           <textarea id="keluhan" rows="2" placeholder="Tuliskan keluhan saat ini..." required></textarea>
         </div>
 
-        <!-- Tanda Vital / Vital Signs -->
+        <!-- Tanda Vital -->
         <div class="form-group full-width">
           <label>Tanda Vital (5 - 9)</label>
           <div class="vital-sign">
@@ -155,6 +164,21 @@
             <input type="text" id="rr" placeholder="RR" title="Laju Napas">
             <input type="text" id="s" placeholder="S" title="Suhu">
             <input type="text" id="spo2" placeholder="SpO2" title="Saturasi Oksigen">
+          </div>
+
+          <!-- Opsi Tambahan O2 -->
+          <div class="o2-group">
+            <div>
+              <label>Bantuan O2</label>
+              <select id="opsiO2" onchange="toggleO2Input()">
+                <option value="Tanpa O2">Tanpa O2</option>
+                <option value="Dengan O2">Dengan O2</option>
+              </select>
+            </div>
+            <div id="boxDosisO2" style="display: none;">
+              <label>Dosis / Alat O2</label>
+              <input type="text" id="dosisO2" placeholder="Cth: NCK 3 lpm">
+            </div>
           </div>
         </div>
 
@@ -186,10 +210,21 @@
   </div>
 
   <script>
+    // Fungsi Menampilkan/Sembunyikan Kolom Dosis O2
+    function toggleO2Input() {
+      const opsiO2 = document.getElementById('opsiO2').value;
+      const boxDosis = document.getElementById('boxDosisO2');
+      if (opsiO2 === 'Dengan O2') {
+        boxDosis.style.display = 'block';
+      } else {
+        boxDosis.style.display = 'none';
+        document.getElementById('dosisO2').value = '';
+      }
+    }
+
     document.getElementById('formLapor').addEventListener('submit', function(e) {
       e.preventDefault();
       
-      // Ambil Nilai Form
       const unit = document.getElementById('asalUnit').value;
       const nama = document.getElementById('namaPasien').value;
       const diag = document.getElementById('diagnosa').value;
@@ -199,7 +234,18 @@
       const n = document.getElementById('n').value || '-';
       const rr = document.getElementById('rr').value || '-';
       const s = document.getElementById('s').value || '-';
-      const spo2 = document.getElementById('spo2').value || '-';
+      
+      // Mengurus Format Teks SpO2 & O2
+      const spo2Val = document.getElementById('spo2').value || '-';
+      const opsiO2 = document.getElementById('opsiO2').value;
+      const dosisO2 = document.getElementById('dosisO2').value;
+
+      let ketO2 = `${spo2Val}%`;
+      if (opsiO2 === 'Dengan O2' && dosisO2) {
+        ketO2 += ` (${opsiO2} ${dosisO2})`;
+      } else if (opsiO2 === 'Dengan O2') {
+        ketO2 += ` (${opsiO2})`;
+      }
 
       const rpd = document.getElementById('rpd').value || '-';
       const rpo = document.getElementById('rpo').value || '-';
@@ -214,7 +260,7 @@ TD: ${td}
 N: ${n}
 RR: ${rr}
 S: ${s}
-SpO2: ${spo2}%
+SpO2: ${ketO2}
 
 RPD: ${rpd}
 RPO: ${rpo}
@@ -223,7 +269,7 @@ rencana tindakan ${rencana}
 
 Penunjang terlampir, apakah ada advis tambahan dokter? terimakasih🙏`;
 
-      // Copy ke Clipboard Perangkat (Mac/Windows/Android)
+      // Copy ke Clipboard
       navigator.clipboard.writeText(formatTeks).then(() => {
         const status = document.getElementById('statusAlert');
         const preview = document.getElementById('preview');
@@ -244,6 +290,7 @@ Penunjang terlampir, apakah ada advis tambahan dokter? terimakasih🙏`;
       document.getElementById('formLapor').reset();
       document.getElementById('preview').style.display = 'none';
       document.getElementById('statusAlert').innerText = '';
+      toggleO2Input(); // Reset tampilan O2
     }
   </script>
 </body>
