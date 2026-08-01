@@ -3,20 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lapor Dokter</title>
+  <title>Aplikasi Asisten Perawat</title>
   
   <!-- TAG ANTI-CACHE -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <!-- SCRIPT AUTO-RELOAD BROWSER MEMORY -->
   <script>
-    // Memaksa browser mengunduh ulang versi segar dari server jika dibuka dari histori cache
     window.addEventListener('pageshow', function (event) {
-      if (event.persisted) {
-        window.location.reload();
-      }
+      if (event.persisted) { window.location.reload(); }
     });
   </script>
 
@@ -39,13 +35,41 @@
       border-radius: 12px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     }
+    
+    /* NAVIGASI TAB MENU */
+    .tab-nav {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #eef2f5;
+      padding-bottom: 8px;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 8px 5px;
+      background: #e9ecef;
+      color: #495057;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: #0d6efd;
+      color: white;
+    }
+
+    /* KONTEN TAB */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
     h2 {
       margin: 0 0 15px 0;
       color: #0d6efd;
-      font-size: 18px;
+      font-size: 16px;
       text-align: center;
-      border-bottom: 2px solid #eef2f5;
-      padding-bottom: 10px;
     }
     .form-grid {
       display: grid;
@@ -107,7 +131,6 @@
       font-weight: bold;
       font-size: 13px;
       cursor: pointer;
-      transition: background 0.2s;
     }
     .btn-submit { background-color: #0d6efd; color: white; }
     .btn-submit:hover { background-color: #0b5ed7; }
@@ -126,7 +149,7 @@
       color: #212529;
       display: none;
     }
-    #statusAlert {
+    .status-alert {
       margin-top: 8px;
       font-size: 12px;
       text-align: center;
@@ -138,170 +161,216 @@
 <body>
 
   <div class="app-card">
-    <h2>📋 Form Lapor Dokter</h2>
     
-    <form id="formLapor">
-      <div class="form-grid">
-        
-        <!-- Asal Unit -->
-        <div class="form-group full-width">
-          <label>Asal Unit</label>
-          <select id="asalUnit" required>
-            <option value="">-- Pilih Unit --</option>
-            <option value="IGD">IGD</option>
-            <option value="HD">HD</option>
-            <option value="KABER">KABER</option>
-            <option value="RPS">RPS</option>
-            <option value="RICT">RICT</option>
-            <option value="UPI">UPI</option>
-            <option value="Rajal">Rajal</option>
-          </select>
-        </div>
+    <!-- MENU TAB ATAS -->
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab('tabLapor')">📋 Lapor Dokter</button>
+      <button class="tab-btn" onclick="switchTab('tabResep')">💊 E-Resep</button>
+    </div>
 
-        <!-- Nama Pasien & Diagnosa -->
-        <div class="form-group full-width">
-          <label>Nama Pasien</label>
-          <input type="text" id="namaPasien" placeholder="Contoh: Bpk. Hadi" required>
-        </div>
-
-        <div class="form-group full-width">
-          <label>Diagnosa</label>
-          <input type="text" id="diagnosa" placeholder="Contoh: CHF" required>
-        </div>
-
-        <div class="form-group full-width">
-          <label>Keluhan Utama Saat Ini</label>
-          <textarea id="keluhan" rows="2" placeholder="Contoh: Nyeri dada" required></textarea>
-        </div>
-
-        <!-- Tanda Vital -->
-        <div class="form-group full-width">
-          <label>Tanda Vital (TD / N / RR / S / SpO2)</label>
-          <div class="vital-sign">
-            <input type="text" id="td" placeholder="TD" title="Tekanan Darah">
-            <input type="text" id="n" placeholder="N" title="Nadi">
-            <input type="text" id="rr" placeholder="RR" title="Laju Napas">
-            <input type="text" id="s" placeholder="S" title="Suhu">
-            <input type="text" id="spo2" placeholder="SpO2" title="Saturasi Oksigen">
+    <!-- ================= TAB 1: LAPOR DOKTER ================= -->
+    <div id="tabLapor" class="tab-content active">
+      <h2>📋 Form Lapor Dokter</h2>
+      
+      <form id="formLapor">
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label>Asal Unit</label>
+            <select id="asalUnit" required>
+              <option value="">-- Pilih Unit --</option>
+              <option value="IGD">IGD</option>
+              <option value="HD">HD</option>
+              <option value="KABER">KABER</option>
+              <option value="RPS">RPS</option>
+              <option value="RICT">RICT</option>
+              <option value="UPI">UPI</option>
+              <option value="Rajal">Rajal</option>
+            </select>
           </div>
 
-          <!-- Opsi Tambahan O2 -->
-          <div class="o2-group">
-            <div>
-              <label>Bantuan O2</label>
-              <select id="opsiO2" onchange="toggleO2Input()">
-                <option value="Tanpa O2">Tanpa O2</option>
-                <option value="Dengan O2">Dengan O2</option>
-              </select>
+          <div class="form-group full-width">
+            <label>Nama Pasien</label>
+            <input type="text" id="namaPasien" placeholder="Contoh: Bpk. Hadi" required>
+          </div>
+
+          <div class="form-group full-width">
+            <label>Diagnosa</label>
+            <input type="text" id="diagnosa" placeholder="Contoh: CHF" required>
+          </div>
+
+          <div class="form-group full-width">
+            <label>Keluhan Utama Saat Ini</label>
+            <textarea id="keluhan" rows="2" placeholder="Contoh: Nyeri dada" required></textarea>
+          </div>
+
+          <div class="form-group full-width">
+            <label>Tanda Vital (TD / N / RR / S / SpO2)</label>
+            <div class="vital-sign">
+              <input type="text" id="td" placeholder="TD">
+              <input type="text" id="n" placeholder="N">
+              <input type="text" id="rr" placeholder="RR">
+              <input type="text" id="s" placeholder="S">
+              <input type="text" id="spo2" placeholder="SpO2">
             </div>
-            <div id="boxDosisO2" style="display: none;">
-              <label>Dosis / Alat O2</label>
-              <input type="text" id="dosisO2" placeholder="Cth: NRBM 8lpm">
+
+            <div class="o2-group">
+              <div>
+                <label>Bantuan O2</label>
+                <select id="opsiO2" onchange="toggleO2Input()">
+                  <option value="Tanpa O2">Tanpa O2</option>
+                  <option value="Dengan O2">Dengan O2</option>
+                </select>
+              </div>
+              <div id="boxDosisO2" style="display: none;">
+                <label>Dosis / Alat O2</label>
+                <input type="text" id="dosisO2" placeholder="Cth: NRBM 8lpm">
+              </div>
             </div>
+          </div>
+
+          <div class="form-group full-width">
+            <label>Tx IGD (Terapi dari IGD)</label>
+            <textarea id="txIgd" rows="2" placeholder="Contoh: Injeksi Furosemid 20mg"></textarea>
+          </div>
+
+          <div class="form-group full-width">
+            <label>Dokter DPJP di IGD</label>
+            <input type="text" id="dokterIgd" list="daftarDokter" placeholder="Ketik nama dokter..." autocomplete="off">
+          </div>
+
+          <div class="form-group full-width">
+            <label>Advis Dokter di IGD</label>
+            <textarea id="advisIgd" rows="2" placeholder="Contoh: Cek EKG ulang"></textarea>
+          </div>
+
+          <div class="form-group full-width">
+            <label>RPD</label>
+            <input type="text" id="rpd" placeholder="Contoh: HT">
+          </div>
+
+          <div class="form-group full-width">
+            <label>RPO</label>
+            <input type="text" id="rpo" placeholder="Contoh: Amlodipin 10mg">
+          </div>
+
+          <div class="form-group full-width">
+            <label>Rencana Tindakan</label>
+            <textarea id="rencana" rows="2" placeholder="Contoh: Rencana USG ABD"></textarea>
           </div>
         </div>
 
-        <!-- Tx IGD -->
-        <div class="form-group full-width">
-          <label>Tx IGD (Terapi dari IGD)</label>
-          <textarea id="txIgd" rows="2" placeholder="Contoh: Injeksi Furosemid 20mg, ISDN 5mg SUB"></textarea>
+        <div class="btn-group">
+          <button type="button" class="btn-reset" onclick="resetForm('formLapor')">Reset</button>
+          <button type="submit" class="btn-submit">📋 Salin Format Lapor</button>
+        </div>
+      </form>
+
+      <div id="statusLapor" class="status-alert"></div>
+      <div id="previewLapor" class="preview-box"></div>
+    </div>
+
+
+    <!-- ================= TAB 2: PERMINTAAN E-RESEP ================= -->
+    <div id="tabResep" class="tab-content">
+      <h2>💊 Form Permintaan E-Resep</h2>
+      
+      <form id="formResep">
+        <div class="form-grid">
+          
+          <div class="form-group">
+            <label>No. RM</label>
+            <input type="text" id="noRm" placeholder="Cth: 12-34-56" required>
+          </div>
+
+          <div class="form-group">
+            <label>Nama Pasien</label>
+            <input type="text" id="namaPasienResep" placeholder="Cth: Tn. Ahmad" required>
+          </div>
+
+          <div class="form-group full-width">
+            <label>Daftar Obat / Permintaan Resep</label>
+            <textarea id="daftarObat" rows="5" placeholder="Ketik obat di sini...&#10;Contoh:&#10;- Amlodipin 10mg 1x1&#10;- Paracetamol 500mg 3x1" required></textarea>
+          </div>
+
         </div>
 
-        <!-- Dokter DPJP -->
-        <div class="form-group full-width">
-          <label>Dokter Penanggung Jawab / DPJP di IGD</label>
-          <input type="text" id="dokterIgd" list="daftarDokter" placeholder="Ketik nama dokter (Cth: dokter jaga / sin)...">
-          <datalist id="daftarDokter">
-            <option value="dokter jaga"></option>
-            <option value="dr. Syafira, Sp.N"></option>
-            <option value="dr. Widodo, Sp.N"></option>
-            <option value="dr. Kiki, Sp.N"></option>
-            <option value="dr. Surya, Sp.THT-KL"></option>
-            <option value="dr. Stefani, Sp.THT-KL"></option>
-            <option value="dr. Aditya, Sp.THT-KL"></option>
-            <option value="dr. Sigit, Sp.BP-RE"></option>
-            <option value="dr. Ratna, Sp.DVE"></option>
-            <option value="dr. Eva, Sp.DVE"></option>
-            <option value="dr. Dearisa, Sp.KJ"></option>
-            <option value="dr. Azizah, Sp.KJ"></option>
-            <option value="drg. Fredy, Sp.BM"></option>
-            <option value="drg. Fitriana, Sp.BM"></option>
-            <option value="dr. Barlian, Sp.KFR"></option>
-            <option value="dr. Nunik, Sp.KFR"></option>
-            <option value="dr. Retno, Sp.OG"></option>
-            <option value="dr. Irwan, Sp.OG"></option>
-            <option value="dr. Zaki, Sp.OG"></option>
-            <option value="dr. Yayuk, Sp.OG"></option>
-            <option value="dr. Ariya, Sp.OG"></option>
-            <option value="dr. Nurike, Sp.PD"></option>
-            <option value="dr. Nur Samsu, Sp.PD-KGH"></option>
-            <option value="dr. Dyah, Sp.PD"></option>
-            <option value="dr. Ogit, Sp.PD"></option>
-            <option value="dr. Rama, Sp.PD"></option>
-            <option value="dr. Bondan, Sp.PD"></option>
-            <option value="dr. Bayu, Sp.PD"></option>
-            <option value="dr. Aji, Sp.OT"></option>
-            <option value="dr. Rangga, Sp.OT"></option>
-            <option value="dr. Amukti, Sp.B"></option>
-            <option value="dr. Sinda, Sp.B"></option>
-            <option value="dr. Haiman, Sp.B"></option>
-            <option value="dr. Bara, Sp.B"></option>
-            <option value="dr. Yahya, Sp.BS"></option>
-            <option value="dr. Wildan, Sp.BS"></option>
-            <option value="dr. Imam, Sp.BTKV"></option>
-            <option value="dr. Tedjo, Sp.B-KBD"></option>
-            <option value="dr. Heru, Sp.B-KBD"></option>
-            <option value="dr. Tohir, Sp.M"></option>
-            <option value="dr. Catur, Sp.M"></option>
-            <option value="dr. Yasmin, Sp.M"></option>
-            <option value="dr. Mirza, Sp.M"></option>
-            <option value="dr. Arief Budi, Sp.JP"></option>
-            <option value="dr. Ardian, Sp.JP"></option>
-            <option value="dr. Evelyn, Sp.JP"></option>
-            <option value="dr. Harnanik, Sp.JP"></option>
-            <option value="dr. Hendri, Sp.P"></option>
-            <option value="dr. Siti, Sp.P"></option>
-            <option value="dr. Rhomdhon, Sp.U"></option>
-            <option value="dr. Ifad, Sp.U"></option>
-          </datalist>
+        <div class="btn-group">
+          <button type="button" class="btn-reset" onclick="resetForm('formResep')">Reset</button>
+          <button type="submit" class="btn-submit">💊 Salin Format E-Resep</button>
         </div>
+      </form>
 
-        <!-- Advis Dokter IGD -->
-        <div class="form-group full-width">
-          <label>Advis Dokter di IGD</label>
-          <textarea id="advisIgd" rows="2" placeholder="Contoh: Cek EKG ulang, Bedrest total"></textarea>
-        </div>
+      <div id="statusResep" class="status-alert"></div>
+      <div id="previewResep" class="preview-box"></div>
+    </div>
 
-        <!-- RPD & RPO -->
-        <div class="form-group full-width">
-          <label>Riwayat Penyakit Dahulu (RPD)</label>
-          <input type="text" id="rpd" placeholder="Contoh: HT">
-        </div>
+    <!-- DATALIST NAMA DOKTER (DIPAKAI BERSAMA) -->
+    <datalist id="daftarDokter">
+      <option value="dokter jaga"></option>
+      <option value="dr. Syafira, Sp.N"></option>
+      <option value="dr. Widodo, Sp.N"></option>
+      <option value="dr. Kiki, Sp.N"></option>
+      <option value="dr. Surya, Sp.THT-KL"></option>
+      <option value="dr. Stefani, Sp.THT-KL"></option>
+      <option value="dr. Aditya, Sp.THT-KL"></option>
+      <option value="dr. Sigit, Sp.BP-RE"></option>
+      <option value="dr. Ratna, Sp.DVE"></option>
+      <option value="dr. Eva, Sp.DVE"></option>
+      <option value="dr. Dearisa, Sp.KJ"></option>
+      <option value="dr. Azizah, Sp.KJ"></option>
+      <option value="drg. Fredy, Sp.BM"></option>
+      <option value="drg. Fitriana, Sp.BM"></option>
+      <option value="dr. Barlian, Sp.KFR"></option>
+      <option value="dr. Nunik, Sp.KFR"></option>
+      <option value="dr. Retno, Sp.OG"></option>
+      <option value="dr. Irwan, Sp.OG"></option>
+      <option value="dr. Zaki, Sp.OG"></option>
+      <option value="dr. Yayuk, Sp.OG"></option>
+      <option value="dr. Ariya, Sp.OG"></option>
+      <option value="dr. Nurike, Sp.PD"></option>
+      <option value="dr. Nur Samsu, Sp.PD-KGH"></option>
+      <option value="dr. Dyah, Sp.PD"></option>
+      <option value="dr. Ogit, Sp.PD"></option>
+      <option value="dr. Rama, Sp.PD"></option>
+      <option value="dr. Bondan, Sp.PD"></option>
+      <option value="dr. Bayu, Sp.PD"></option>
+      <option value="dr. Aji, Sp.OT"></option>
+      <option value="dr. Rangga, Sp.OT"></option>
+      <option value="dr. Amukti, Sp.B"></option>
+      <option value="dr. Sinda, Sp.B"></option>
+      <option value="dr. Haiman, Sp.B"></option>
+      <option value="dr. Bara, Sp.B"></option>
+      <option value="dr. Yahya, Sp.BS"></option>
+      <option value="dr. Wildan, Sp.BS"></option>
+      <option value="dr. Imam, Sp.BTKV"></option>
+      <option value="dr. Tedjo, Sp.B-KBD"></option>
+      <option value="dr. Heru, Sp.B-KBD"></option>
+      <option value="dr. Tohir, Sp.M"></option>
+      <option value="dr. Catur, Sp.M"></option>
+      <option value="dr. Yasmin, Sp.M"></option>
+      <option value="dr. Mirza, Sp.M"></option>
+      <option value="dr. Arief Budi, Sp.JP"></option>
+      <option value="dr. Ardian, Sp.JP"></option>
+      <option value="dr. Evelyn, Sp.JP"></option>
+      <option value="dr. Harnanik, Sp.JP"></option>
+      <option value="dr. Hendri, Sp.P"></option>
+      <option value="dr. Siti, Sp.P"></option>
+      <option value="dr. Rhomdhon, Sp.U"></option>
+      <option value="dr. Ifad, Sp.U"></option>
+    </datalist>
 
-        <div class="form-group full-width">
-          <label>Riwayat Pengobatan (RPO)</label>
-          <input type="text" id="rpo" placeholder="Contoh: Amlodipin 10mg">
-        </div>
-
-        <!-- Rencana Tindakan -->
-        <div class="form-group full-width">
-          <label>Rencana Tindakan</label>
-          <textarea id="rencana" rows="2" placeholder="Contoh: Rencana USG ABD"></textarea>
-        </div>
-
-      </div>
-
-      <div class="btn-group">
-        <button type="button" class="btn-reset" onclick="resetForm()">Reset</button>
-        <button type="submit" class="btn-submit">📋 Salin Teks Format</button>
-      </div>
-    </form>
-
-    <div id="statusAlert"></div>
-    <div id="preview" class="preview-box"></div>
   </div>
 
   <script>
+    // Fungsi Pindah Tab
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
     function toggleO2Input() {
       const opsiO2 = document.getElementById('opsiO2').value;
       const boxDosis = document.getElementById('boxDosisO2');
@@ -313,6 +382,7 @@
       }
     }
 
+    // Submit Lapor Dokter
     document.getElementById('formLapor').addEventListener('submit', function(e) {
       e.preventDefault();
       
@@ -337,16 +407,13 @@
         ketO2 += ` (${opsiO2})`;
       }
 
-      // Ambil nilai Tx IGD, Dokter, Advis
       const txIgd = document.getElementById('txIgd').value || '-';
       const dokterIgd = document.getElementById('dokterIgd').value || 'Dokter';
       const advisIgd = document.getElementById('advisIgd').value || '-';
-
       const rpd = document.getElementById('rpd').value || '-';
       const rpo = document.getElementById('rpo').value || '-';
       const rencana = document.getElementById('rencana').value || '-';
 
-      // Susun Format Teks WhatsApp Sesuai Permintaan Baru
       const formatTeks = `Assalamualaikum dokter melaporkan pasien baru pindahan dari ${unit} atas nama ${nama} dengan ${diag}
 
 keluhan saat ini ${keluhan}
@@ -370,27 +437,53 @@ rencana tindakan ${rencana}
 
 Penunjang terlampir, apakah ada advis tambahan dokter? terimakasih🙏`;
 
-      navigator.clipboard.writeText(formatTeks).then(() => {
-        const status = document.getElementById('statusAlert');
-        const preview = document.getElementById('preview');
+      copyToClipboard(formatTeks, 'statusLapor', 'previewLapor');
+    });
+
+    // Submit E-Resep
+    document.getElementById('formResep').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const dokter = document.getElementById('dokterResep').value;
+      const noRm = document.getElementById('noRm').value;
+      const nama = document.getElementById('namaPasienResep').value;
+      const obat = document.getElementById('daftarObat').value;
+
+      // Format E-Resep Sesuai Permintaan
+      const formatResep = `Assalamualaikum ${dokter} minta eresep (${noRm}) // (${nama})
+${obat}
+
+Terimakasih 🙏`;
+
+      copyToClipboard(formatResep, 'statusResep', 'previewResep');
+    });
+
+    // Helper Copy ke Clipboard
+    function copyToClipboard(text, statusId, previewId) {
+      navigator.clipboard.writeText(text).then(() => {
+        const status = document.getElementById(statusId);
+        const preview = document.getElementById(previewId);
         
         status.innerText = '✅ Teks berhasil disalin! Tinggal Paste di WA';
         preview.style.display = 'block';
-        preview.innerText = formatTeks;
+        preview.innerText = text;
 
-        setTimeout(() => {
-          status.innerText = '';
-        }, 4000);
+        setTimeout(() => { status.innerText = ''; }, 4000);
       }).catch(err => {
         alert('Gagal menyalin otomatis, silakan salin manual.');
       });
-    });
+    }
 
-    function resetForm() {
-      document.getElementById('formLapor').reset();
-      document.getElementById('preview').style.display = 'none';
-      document.getElementById('statusAlert').innerText = '';
-      toggleO2Input();
+    function resetForm(formId) {
+      document.getElementById(formId).reset();
+      if(formId === 'formLapor') {
+        document.getElementById('previewLapor').style.display = 'none';
+        document.getElementById('statusLapor').innerText = '';
+        toggleO2Input();
+      } else {
+        document.getElementById('previewResep').style.display = 'none';
+        document.getElementById('statusResep').innerText = '';
+      }
     }
   </script>
 </body>
