@@ -164,8 +164,8 @@
     
     <!-- MENU TAB ATAS -->
     <div class="tab-nav">
-      <button class="tab-btn active" onclick="switchTab('tabLapor')">📋 Lapor Dokter</button>
-      <button class="tab-btn" onclick="switchTab('tabResep')">💊 E-Resep</button>
+      <button class="tab-btn active" onclick="switchTab(event, 'tabLapor')">📋 Lapor Dokter</button>
+      <button class="tab-btn" onclick="switchTab(event, 'tabResep')">💊 E-Resep</button>
     </div>
 
     <!-- ================= TAB 1: LAPOR DOKTER ================= -->
@@ -277,6 +277,11 @@
       <form id="formResep">
         <div class="form-grid">
           
+          <div class="form-group full-width">
+            <label>Dokter DPJP / Tujuan</label>
+            <input type="text" id="dokterResep" list="daftarDokter" placeholder="Ketik nama dokter..." autocomplete="off" required>
+          </div>
+
           <div class="form-group">
             <label>No. RM</label>
             <input type="text" id="noRm" placeholder="Cth: 12-34-56" required>
@@ -363,12 +368,12 @@
 
   <script>
     // Fungsi Pindah Tab
-    function switchTab(tabId) {
+    function switchTab(evt, tabId) {
       document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
 
       document.getElementById(tabId).classList.add('active');
-      event.target.classList.add('active');
+      evt.currentTarget.classList.add('active');
     }
 
     function toggleO2Input() {
