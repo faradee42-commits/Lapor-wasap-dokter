@@ -277,11 +277,6 @@
       <form id="formResep">
         <div class="form-grid">
           
-          <div class="form-group full-width">
-            <label>Dokter DPJP / Tujuan</label>
-            <input type="text" id="dokterResep" list="daftarDokter" placeholder="Ketik nama dokter..." autocomplete="off" required>
-          </div>
-
           <div class="form-group">
             <label>No. RM</label>
             <input type="text" id="noRm" placeholder="Cth: 12-34-56" required>
@@ -445,24 +440,22 @@ Penunjang terlampir, apakah ada advis tambahan dokter? terimakasih🙏`;
       copyToClipboard(formatTeks, 'statusLapor', 'previewLapor');
     });
 
-    // Submit E-Resep
-    document.getElementById('formResep').addEventListener('submit', function(e) {
-      e.preventDefault();
+// Submit E-Resep
+document.getElementById('formResep').addEventListener('submit', function(e) {
+  e.preventDefault();
 
-      const dokter = document.getElementById('dokterResep').value;
-      const noRm = document.getElementById('noRm').value;
-      const nama = document.getElementById('namaPasienResep').value;
-      const obat = document.getElementById('daftarObat').value;
+  const noRm = document.getElementById('noRm').value;
+  const nama = document.getElementById('namaPasienResep').value;
+  const obat = document.getElementById('daftarObat').value;
 
-      // Format E-Resep Sesuai Permintaan
-      const formatResep = `Assalamualaikum ${dokter} minta eresep (${noRm}) // (${nama})
+  // Format baru langsung salam & minta eresep
+  const formatResep = `Assalamualaikum minta eresep (${noRm}) // (${nama})
 ${obat}
 
 Terimakasih 🙏`;
 
-      copyToClipboard(formatResep, 'statusResep', 'previewResep');
-    });
-
+  copyToClipboard(formatResep, 'statusResep', 'previewResep');
+});
     // Helper Copy ke Clipboard
     function copyToClipboard(text, statusId, previewId) {
       navigator.clipboard.writeText(text).then(() => {
