@@ -185,72 +185,72 @@
           </div>
         </div>
 
-        <!-- TAMBAHAN BARU 1: Tx IGD -->
+        <!-- Tx IGD -->
         <div class="form-group full-width">
           <label>Tx IGD (Terapi dari IGD)</label>
           <textarea id="txIgd" rows="2" placeholder="Contoh: Injeksi Furosemid 20mg, ISDN 5mg SUB"></textarea>
         </div>
 
-        <!-- TAMBAHAN BARU 2: Pilih Dokter DPJP -->
+        <!-- FITUR BARU: Pilih / Ketik Dokter DPJP -->
         <div class="form-group full-width">
           <label>Dokter Penanggung Jawab / DPJP di IGD</label>
-          <select id="dokterIgd">
-            <option value="">-- Pilih Dokter --</option>
-            <option value="dr. Jaga">dr. Jaga</option>
-            <option value="dr. Syafira, Sp.N">dr. Syafira, Sp.N</option>
-            <option value="dr. Widodo, Sp.N">dr. Widodo, Sp.N</option>
-            <option value="dr. Kiki, Sp.N">dr. Kiki, Sp.N</option>
-            <option value="dr. Surya, Sp.THT-KL">dr. Surya, Sp.THT-KL</option>
-            <option value="dr. Stefani, Sp.THT-KL">dr. Stefani, Sp.THT-KL</option>
-            <option value="dr. Aditya, Sp.THT-KL">dr. Aditya, Sp.THT-KL</option>
-            <option value="dr. Sigit, Sp.BP-RE">dr. Sigit, Sp.BP-RE</option>
-            <option value="dr. Ratna, Sp.DVE">dr. Ratna, Sp.DVE</option>
-            <option value="dr. Eva, Sp.DVE">dr. Eva, Sp.DVE</option>
-            <option value="dr. Dearisa, Sp.KJ">dr. Dearisa, Sp.KJ</option>
-            <option value="dr. Azizah, Sp.KJ">dr. Azizah, Sp.KJ</option>
-            <option value="drg. Fredy, Sp.BM">drg. Fredy, Sp.BM</option>
-            <option value="drg. Fitriana, Sp.BM">drg. Fitriana, Sp.BM</option>
-            <option value="dr. Barlian, Sp.KFR">dr. Barlian, Sp.KFR</option>
-            <option value="dr. Nunik, Sp.KFR">dr. Nunik, Sp.KFR</option>
-            <option value="dr. Retno, Sp.OG">dr. Retno, Sp.OG</option>
-            <option value="dr. Irwan, Sp.OG">dr. Irwan, Sp.OG</option>
-            <option value="dr. Zaki, Sp.OG">dr. Zaki, Sp.OG</option>
-            <option value="dr. Yayuk, Sp.OG">dr. Yayuk, Sp.OG</option>
-            <option value="dr. Ariya, Sp.OG">dr. Ariya, Sp.OG</option>
-            <option value="dr. Nurike, Sp.PD">dr. Nurike, Sp.PD</option>
-            <option value="dr. Nur Samsu, Sp.PD-KGH">dr. Nur Samsu, Sp.PD-KGH</option>
-            <option value="dr. Dyah, Sp.PD">dr. Dyah, Sp.PD</option>
-            <option value="dr. Ogit, Sp.PD">dr. Ogit, Sp.PD</option>
-            <option value="dr. Rama, Sp.PD">dr. Rama, Sp.PD</option>
-            <option value="dr. Bondan, Sp.PD">dr. Bondan, Sp.PD</option>
-            <option value="dr. Bayu, Sp.PD">dr. Bayu, Sp.PD</option>
-            <option value="dr. Aji, Sp.OT">dr. Aji, Sp.OT</option>
-            <option value="dr. Rangga, Sp.OT">dr. Rangga, Sp.OT</option>
-            <option value="dr. Amukti, Sp.B">dr. Amukti, Sp.B</option>
-            <option value="dr. Sinda, Sp.B">dr. Sinda, Sp.B</option>
-            <option value="dr. Haiman, Sp.B">dr. Haiman, Sp.B</option>
-            <option value="dr. Bara, Sp.B">dr. Bara, Sp.B</option>
-            <option value="dr. Yahya, Sp.BS">dr. Yahya, Sp.BS</option>
-            <option value="dr. Wildan, Sp.BS">dr. Wildan, Sp.BS</option>
-            <option value="dr. Imam, Sp.BTKV">dr. Imam, Sp.BTKV</option>
-            <option value="dr. Tedjo, Sp.B-KBD">dr. Tedjo, Sp.B-KBD</option>
-            <option value="dr. Heru, Sp.B-KBD">dr. Heru, Sp.B-KBD</option>
-            <option value="dr. Tohir, Sp.M">dr. Tohir, Sp.M</option>
-            <option value="dr. Catur, Sp.M">dr. Catur, Sp.M</option>
-            <option value="dr. Yasmin, Sp.M">dr. Yasmin, Sp.M</option>
-            <option value="dr. Mirza, Sp.M">dr. Mirza, Sp.M</option>
-            <option value="dr. Arief Budi, Sp.JP">dr. Arief Budi, Sp.JP</option>
-            <option value="dr. Ardian, Sp.JP">dr. Ardian, Sp.JP</option>
-            <option value="dr. Evelyn, Sp.JP">dr. Evelyn, Sp.JP</option>
-            <option value="dr. Harnanik, Sp.JP">dr. Harnanik, Sp.JP</option>
-            <option value="dr. Hendri, Sp.P">dr. Hendri, Sp.P</option>
-            <option value="dr. Siti, Sp.P">dr. Siti, Sp.P</option>
-            <option value="dr. Rhomdhon, Sp.U">dr. Rhomdhon, Sp.U</option>
-            <option value="dr. Ifad, Sp.U">dr. Ifad, Sp.U</option>
-          </select>
+          <input type="text" id="dokterIgd" list="daftarDokter" placeholder="Ketik nama dokter (Cth: sin)...">
+          <datalist id="daftarDokter">
+            <option value="dr. Jaga"></option>
+            <option value="dr. Syafira, Sp.N"></option>
+            <option value="dr. Widodo, Sp.N"></option>
+            <option value="dr. Kiki, Sp.N"></option>
+            <option value="dr. Surya, Sp.THT-KL"></option>
+            <option value="dr. Stefani, Sp.THT-KL"></option>
+            <option value="dr. Aditya, Sp.THT-KL"></option>
+            <option value="dr. Sigit, Sp.BP-RE"></option>
+            <option value="dr. Ratna, Sp.DVE"></option>
+            <option value="dr. Eva, Sp.DVE"></option>
+            <option value="dr. Dearisa, Sp.KJ"></option>
+            <option value="dr. Azizah, Sp.KJ"></option>
+            <option value="drg. Fredy, Sp.BM"></option>
+            <option value="drg. Fitriana, Sp.BM"></option>
+            <option value="dr. Barlian, Sp.KFR"></option>
+            <option value="dr. Nunik, Sp.KFR"></option>
+            <option value="dr. Retno, Sp.OG"></option>
+            <option value="dr. Irwan, Sp.OG"></option>
+            <option value="dr. Zaki, Sp.OG"></option>
+            <option value="dr. Yayuk, Sp.OG"></option>
+            <option value="dr. Ariya, Sp.OG"></option>
+            <option value="dr. Nurike, Sp.PD"></option>
+            <option value="dr. Nur Samsu, Sp.PD-KGH"></option>
+            <option value="dr. Dyah, Sp.PD"></option>
+            <option value="dr. Ogit, Sp.PD"></option>
+            <option value="dr. Rama, Sp.PD"></option>
+            <option value="dr. Bondan, Sp.PD"></option>
+            <option value="dr. Bayu, Sp.PD"></option>
+            <option value="dr. Aji, Sp.OT"></option>
+            <option value="dr. Rangga, Sp.OT"></option>
+            <option value="dr. Amukti, Sp.B"></option>
+            <option value="dr. Sinda, Sp.B"></option>
+            <option value="dr. Haiman, Sp.B"></option>
+            <option value="dr. Bara, Sp.B"></option>
+            <option value="dr. Yahya, Sp.BS"></option>
+            <option value="dr. Wildan, Sp.BS"></option>
+            <option value="dr. Imam, Sp.BTKV"></option>
+            <option value="dr. Tedjo, Sp.B-KBD"></option>
+            <option value="dr. Heru, Sp.B-KBD"></option>
+            <option value="dr. Tohir, Sp.M"></option>
+            <option value="dr. Catur, Sp.M"></option>
+            <option value="dr. Yasmin, Sp.M"></option>
+            <option value="dr. Mirza, Sp.M"></option>
+            <option value="dr. Arief Budi, Sp.JP"></option>
+            <option value="dr. Ardian, Sp.JP"></option>
+            <option value="dr. Evelyn, Sp.JP"></option>
+            <option value="dr. Harnanik, Sp.JP"></option>
+            <option value="dr. Hendri, Sp.P"></option>
+            <option value="dr. Siti, Sp.P"></option>
+            <option value="dr. Rhomdhon, Sp.U"></option>
+            <option value="dr. Ifad, Sp.U"></option>
+          </datalist>
         </div>
 
-        <!-- TAMBAHAN BARU 3: Advis Dokter IGD -->
+        <!-- Advis Dokter IGD -->
         <div class="form-group full-width">
           <label>Advis Dokter di IGD</label>
           <textarea id="advisIgd" rows="2" placeholder="Contoh: Cek EKG ulang, Bedrest total"></textarea>
