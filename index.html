@@ -18,7 +18,7 @@
     .app-card {
       background: #ffffff;
       width: 100%;
-      max-width: 420px;
+      max-width: 450px;
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
@@ -127,8 +127,9 @@
     <form id="formLapor">
       <div class="form-grid">
         
+        <!-- Asal Unit -->
         <div class="form-group full-width">
-          <label>Asal Unit (1)</label>
+          <label>Asal Unit</label>
           <select id="asalUnit" required>
             <option value="">-- Pilih Unit --</option>
             <option value="IGD">IGD</option>
@@ -140,24 +141,25 @@
           </select>
         </div>
 
+        <!-- Nama Pasien & Diagnosa -->
         <div class="form-group full-width">
-          <label>Nama Pasien (2)</label>
-          <input type="text" id="namaPasien" placeholder="Contoh: Bpk. Ahmad (45 th)" required>
+          <label>Nama Pasien</label>
+          <input type="text" id="namaPasien" placeholder="Contoh: Bpk. Hadi" required>
         </div>
 
         <div class="form-group full-width">
-          <label>Diagnosa (3)</label>
-          <input type="text" id="diagnosa" placeholder="Contoh: Dyspnea ec CHF" required>
+          <label>Diagnosa</label>
+          <input type="text" id="diagnosa" placeholder="Contoh: CHF" required>
         </div>
 
         <div class="form-group full-width">
-          <label>Keluhan Utama (4)</label>
-          <textarea id="keluhan" rows="2" placeholder="Tuliskan keluhan saat ini..." required></textarea>
+          <label>Keluhan Utama Saat Ini</label>
+          <textarea id="keluhan" rows="2" placeholder="Contoh: Nyeri dada" required></textarea>
         </div>
 
         <!-- Tanda Vital -->
         <div class="form-group full-width">
-          <label>Tanda Vital (5 - 9)</label>
+          <label>Tanda Vital (TD / N / RR / S / SpO2)</label>
           <div class="vital-sign">
             <input type="text" id="td" placeholder="TD" title="Tekanan Darah">
             <input type="text" id="n" placeholder="N" title="Nadi">
@@ -177,24 +179,51 @@
             </div>
             <div id="boxDosisO2" style="display: none;">
               <label>Dosis / Alat O2</label>
-              <input type="text" id="dosisO2" placeholder="Cth: NCK 3 lpm">
+              <input type="text" id="dosisO2" placeholder="Cth: NRBM 8lpm">
             </div>
           </div>
         </div>
 
+        <!-- TAMBAHAN BARU 1: Tx IGD -->
         <div class="form-group full-width">
-          <label>Riwayat Penyakit Dahulu / RPD (10)</label>
-          <input type="text" id="rpd" placeholder="Contoh: HT (+), DM (-)">
+          <label>Tx IGD (Terapi dari IGD)</label>
+          <textarea id="txIgd" rows="2" placeholder="Contoh: Injeksi Furosemid 20mg, ISDN 5mg SUB"></textarea>
+        </div>
+
+        <!-- TAMBAHAN BARU 2: Pilih Dokter DPJP -->
+        <div class="form-group full-width">
+          <label>Dokter Penanggung Jawab / DPJP di IGD</label>
+          <select id="dokterIgd">
+            <option value="">-- Pilih Dokter --</option>
+            <!-- Bebas kamu tambah / edit daftar nama dokternya di sini -->
+            <option value="dr. Ahmad, Sp.JP">dr. Ahmad, Sp.JP</option>
+            <option value="dr. Budi, Sp.PD">dr. Budi, Sp.PD</option>
+            <option value="dr. Citra, Sp.A">dr. Citra, Sp.A</option>
+            <option value="dr. Dian, Sp.B">dr. Dian, Sp.B</option>
+          </select>
+        </div>
+
+        <!-- TAMBAHAN BARU 3: Advis Dokter IGD -->
+        <div class="form-group full-width">
+          <label>Advis Dokter di IGD</label>
+          <textarea id="advisIgd" rows="2" placeholder="Contoh: Cek EKG ulang, Bedrest total"></textarea>
+        </div>
+
+        <!-- RPD & RPO -->
+        <div class="form-group full-width">
+          <label>Riwayat Penyakit Dahulu (RPD)</label>
+          <input type="text" id="rpd" placeholder="Contoh: HT">
         </div>
 
         <div class="form-group full-width">
-          <label>Riwayat Pengobatan / RPO (11)</label>
-          <input type="text" id="rpo" placeholder="Contoh: Amlodipine 1x10mg">
+          <label>Riwayat Pengobatan (RPO)</label>
+          <input type="text" id="rpo" placeholder="Contoh: Amlodipin 10mg">
         </div>
 
+        <!-- Rencana Tindakan -->
         <div class="form-group full-width">
-          <label>Rencana / Rencana Tindakan (12)</label>
-          <textarea id="rencana" rows="2" placeholder="Contoh: O2 NCK 3 lpm, IVFD RL 20 tpm"></textarea>
+          <label>Rencana Tindakan</label>
+          <textarea id="rencana" rows="2" placeholder="Contoh: Rencana USG ABD"></textarea>
         </div>
 
       </div>
@@ -210,7 +239,6 @@
   </div>
 
   <script>
-    // Fungsi Menampilkan/Sembunyikan Kolom Dosis O2
     function toggleO2Input() {
       const opsiO2 = document.getElementById('opsiO2').value;
       const boxDosis = document.getElementById('boxDosisO2');
@@ -235,7 +263,6 @@
       const rr = document.getElementById('rr').value || '-';
       const s = document.getElementById('s').value || '-';
       
-      // Mengurus Format Teks SpO2 & O2
       const spo2Val = document.getElementById('spo2').value || '-';
       const opsiO2 = document.getElementById('opsiO2').value;
       const dosisO2 = document.getElementById('dosisO2').value;
@@ -247,11 +274,16 @@
         ketO2 += ` (${opsiO2})`;
       }
 
+      // Ambil nilai Tx IGD, Dokter, Advis
+      const txIgd = document.getElementById('txIgd').value || '-';
+      const dokterIgd = document.getElementById('dokterIgd').value || 'Dokter';
+      const advisIgd = document.getElementById('advisIgd').value || '-';
+
       const rpd = document.getElementById('rpd').value || '-';
       const rpo = document.getElementById('rpo').value || '-';
       const rencana = document.getElementById('rencana').value || '-';
 
-      // Susun Format Teks WhatsApp
+      // Susun Format Teks WhatsApp Sesuai Permintaan Baru
       const formatTeks = `Assalamualaikum dokter melaporkan pasien baru pindahan dari ${unit} atas nama ${nama} dengan ${diag}
 
 keluhan saat ini ${keluhan}
@@ -262,6 +294,12 @@ RR: ${rr}
 S: ${s}
 SpO2: ${ketO2}
 
+Tx igd:
+${txIgd}
+
+Advis dari ${dokterIgd} di igd:
+${advisIgd}
+
 RPD: ${rpd}
 RPO: ${rpo}
 
@@ -269,7 +307,6 @@ rencana tindakan ${rencana}
 
 Penunjang terlampir, apakah ada advis tambahan dokter? terimakasih🙏`;
 
-      // Copy ke Clipboard
       navigator.clipboard.writeText(formatTeks).then(() => {
         const status = document.getElementById('statusAlert');
         const preview = document.getElementById('preview');
@@ -290,7 +327,7 @@ Penunjang terlampir, apakah ada advis tambahan dokter? terimakasih🙏`;
       document.getElementById('formLapor').reset();
       document.getElementById('preview').style.display = 'none';
       document.getElementById('statusAlert').innerText = '';
-      toggleO2Input(); // Reset tampilan O2
+      toggleO2Input();
     }
   </script>
 </body>
